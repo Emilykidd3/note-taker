@@ -5,7 +5,7 @@ const fs = require('fs');
 router.get('/notes', (req, res) => {
     fs.readFile ('db/db.json', 'UTF-8', (err, data) => {
         if (err) {
-            throw err
+            throw err;
         }
         const notes = JSON.parse(data);
         res.json(notes);
@@ -13,7 +13,7 @@ router.get('/notes', (req, res) => {
 });
 
 router.post('/notes', (req, res) => {
-
+    
 })
 
 module.exports = router;

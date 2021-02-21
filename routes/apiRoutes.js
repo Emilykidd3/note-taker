@@ -3,16 +3,21 @@ const fs = require('fs');
 const db = require('../db/db.json');
 const { v4: uuidv4 } = require('uuid');
 const util = require("util");
+const path = require('path');
+const dbPath = path.join(__dirname, '../db/db.json');
+
+function writeDb(res, req) {
+    fs.writeFile(dbPath, JSON.stringify(db, null, 2), (err, data) => {
+        if (err) {
+            return res.status(500).send('failed to set note');
+        } 
+        return res.json(req.body);
+    })
+}
 
 // get data from db.json & parse
 router.get('/notes', (req, res) => {
-    fs.readFile ('./db/db.json', 'UTF-8', (err, data) => {
-        if (err) {
-            throw err;
-        }
-        const notes = JSON.parse(data);
-        res.json(notes);
-    })
+    return res.json(db);
 });
 
 router.post('/notes', (req, res) => {
@@ -20,26 +25,19 @@ router.post('/notes', (req, res) => {
     // takes everything from json file and puts it into the body
     req.body.id = uuidv4().toString();
     db.push(req.body);
-    fs.writeFile('./db/db.json', JSON.stringify(db, null, 2), (err, data) => {
-        if (err) throw err;
-    })
-    return res.json(req.body);
+    writeDb(res, req);
 });
 
 // delete route
 router.delete('/notes/:id', (req, res) => {
+    
     // pull id from param
     // filter to get id
     // results from filter will be used to write new file over
-    const findNote = db.find(note => note.id === req.params.id);
-    console.log(findNote);
-    res.send(findNote);
-    if (!findNote) return res.status(404).send('Could not find note');
-    const filteredNotes = db.filter(note => note.id !== req.params.id);
-    fs.writeFile('./db/db.json', JSON.stringify(filteredNotes, null, 2), (err, data) => {
-        if (err) throw err;
-    })
-    return res.json(db);
+    const findNoteIndex = db.findIndex(note => note.id === req.params.id);
+    if (findNoteIndex === -1) return res.status(404).send('Could not find note');
+    db.splice(findNoteIndex, 1);
+    writeDb(res, req);
 });
 
 module.exports = router;

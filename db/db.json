@@ -1,1 +1,22 @@
-[{"title":"Test Title","text":"Test text","id":"0"}]
+[
+  {
+    "title": "Emily",
+    "text": "Kidd",
+    "id": "19414d72-c41c-4aef-b7fc-b0a60dfe9b29"
+  },
+  {
+    "title": "new note",
+    "text": "new text",
+    "id": "ec64a890-8afc-4bcd-8359-5c00a5e2c8e9"
+  },
+  {
+    "title": "new",
+    "text": "new",
+    "id": "6b2548f5-519a-4c2a-a31b-7524e2c4e119"
+  },
+  {
+    "title": "hello",
+    "text": "hello",
+    "id": "1a5189f9-764a-4994-ae4c-313c489d03c5"
+  }
+]
